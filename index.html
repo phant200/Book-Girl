@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DEMO 02.3.144</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  .voting-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 20px;
+  }
+  .photo-card {
+    width: 200px;
+  }
+  .photo-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+  #result {
+    font-size: 1.2rem;
+    margin-top: 15px;
+  }
+  #votesCount {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+  }
+</style>
+</head>
+<body>
+
+<h1>¿Quién es más atractivo?</h1>
+<div class="voting-container" id="votingContainer">
+  <div class="photo-card">
+    <img id="photo1" src="" alt="Persona 1" />
+    <button id="btn1">Votar atractiva</button>
+  </div>
+  <div class="photo-card">
+    <img id="photo2" src="" alt="Persona 2" />
+    <button id="btn2">Votar atractiva</button>
+  </div>
+</div>
+<div id="result"></div>
+<div id="votesCount"></div>
+
+<script>
+  const photos = [
+    'Captura de pantalla 2025-06-17 152924.png',
+    'Captura de pantalla 2025-06-17 152959.png',
+    'Captura de pantalla 2025-06-17 153010.png',
+    'Captura de pantalla 2025-06-17 153017.png',
+    'Captura de pantalla 2025-06-17 153112.png',
+    'Captura de pantalla 2025-06-17 153119.png',
+    'Captura de pantalla 2025-06-17 153149.png',
+    'Captura de pantalla 2025-06-17 153154.png',
+    'Captura de pantalla 2025-06-17 153157.png',
+    'Captura de pantalla 2025-06-17 153200.png',
+    'Captura de pantalla 2025-06-17 153236.png',
+    'Captura de pantalla 2025-06-17 153242.png',
+    'Captura de pantalla 2025-06-17 153407.png',
+    'Captura de pantalla 2025-06-17 153418.png',
+    'Captura de pantalla 2025-06-17 153446.png',
+    'Captura de pantalla 2025-06-17 153454.png',
+    'Captura de pantalla 2025-06-17 153502.png',
+    'Captura de pantalla 2025-06-17 153514.png',
+    'Captura de pantalla 2025-06-17 153527.png',
+    'Captura de pantalla 2025-06-17 153531.png'
+  ];
+
+  let currentPairIndex = 0;
+
+  const photo1 = document.getElementById('photo1');
+  const photo2 = document.getElementById('photo2');
+  const btn1 = document.getElementById('btn1');
+  const btn2 = document.getElementById('btn2');
+  const resultDiv = document.getElementById('result');
+  const votesCountDiv = document.getElementById('votesCount');
+
+  function loadPair() {
+    if (currentPairIndex >= photos.length / 2) {
+      // Fin de votaciones
+      document.getElementById('votingContainer').style.display = 'none';
+      resultDiv.textContent = "¡Gracias por votar! Se han completado todas las votaciones.";
+      votesCountDiv.textContent = generateFinalVotesMessage();
+      return;
+    }
+    photo1.src = photos[currentPairIndex * 2];
+    photo2.src = photos[currentPairIndex * 2 + 1];
+    resultDiv.textContent = `Votación ${currentPairIndex + 1} de ${photos.length / 2}`;
+    votesCountDiv.textContent = '';
+  }
+
+  // Función para generar número random con distribución aproximada "normal" (más en rango medio)
+  function generateRandomVotes() {
+    const r1 = Math.floor(Math.random() * (50 - 3 + 1)) + 3;
+    const r2 = Math.floor(Math.random() * (50 - 3 + 1)) + 3;
+    const r3 = Math.floor(Math.random() * (50 - 3 + 1)) + 3;
+    const avg = Math.round((r1 + r2 + r3) / 3);
+    return avg;
+  }
+
+  function generateFinalVotesMessage() {
+    const otherVotes = generateRandomVotes();
+    return `Tú y otras ${otherVotes} personas han votado igual que tú.`;
+  }
+
+  function vote() {
+    currentPairIndex++;
+    loadPair();
+  }
+
+  btn1.addEventListener('click', vote);
+  btn2.addEventListener('click', vote);
+
+  loadPair();
+</script>
+
+</body>
+</html>
